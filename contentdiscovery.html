@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Percipio</title>
+
+  <!-- Elements: Web Component -->
+  <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
+
+  <!-- Twitter Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Twitter Bootstrap: Sticky Footer Example -->
+  <link rel="stylesheet"
+    href="https://getbootstrap.com/docs/4.5/examples/sticky-footer-navbar/sticky-footer-navbar.css">
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    main {
+      flex: 1 0 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <!-- Begin page content -->
+    <main role="main">
+      <elements-api id="docs" router="history" />
+    </main>
+
+    <script>
+      (async () => {
+        const docs = document.getElementById('docs');
+        const endpoint = 'content-discovery';
+        const servers = [{ "url": "https://api.percipio.com/" + endpoint, "description": "US Hosted" }, { "url": "https://dew1-api.percipio.com/" + endpoint, "description": "EU Hosted" }]
+        const api = servers[0].url + '/swagger.json';
+        const text = await fetch(api).then(response => {
+          return response.json().then((spec) => {
+            // Add the servers to the spec
+            spec.servers = servers;
+            return spec;
+          });
+        })
+        docs.apiDescriptionDocument = text;
+      })();
+    </script>
+</body>
+
+</html>
